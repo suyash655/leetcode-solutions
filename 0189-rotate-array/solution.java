@@ -1,23 +1,17 @@
 class Solution {
     public void rotate(int[] nums, int k) {
-        k=k%nums.length;
-        reverse(nums,0,nums.length-k-1);
-        reverse(nums,nums.length-k,nums.length-1);
-        reverse(nums,0,nums.length-1);
+        int n = nums.length;
+        int d = k % n; // Handle cases where k > n
+        int[] temp = new int[n];
 
-       
+        // 1. Place each element at its new shifted position in temp
+        for (int i = 0; i < n; i++) {
+            temp[(i + d) % n] = nums[i];
+        }
 
-       
-    }
-    public void reverse(int[] arr, int start, int end){
-        while(start<end){
-            int temp=arr[end];
-            arr[end]=arr[start];
-            arr[start]=temp;
-            start++;
-            end--;
+        // 2. Copy temp back to the original nums array
+        for (int i = 0; i < n; i++) {
+            nums[i] = temp[i];
         }
     }
-
 }
-
