@@ -1,55 +1,29 @@
 class Solution {
-    
-        public void setZeroes(int[][] matrix) {
-    int m = matrix.length;
-    int n = matrix[0].length;
-    
-    boolean firstColZero = false;
-    
-    // Step 1: Check if first column has any zero
-    for (int i = 0; i < m; i++) {
-        if (matrix[i][0] == 0) {
-            firstColZero = true;
-            break;
+    public void setZeroes(int[][] matrix) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        
+        // Trackers to remember which rows and columns should become 0
+        boolean[] zeroRows = new boolean[rows];
+        boolean[] zeroCols = new boolean[cols];
+        
+        // Step 1: First pass to find all original 0s
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (matrix[i][j] == 0) {
+                    zeroRows[i] = true;
+                    zeroCols[j] = true;
+                }
+            }
         }
-    }
-    
-    // Step 2: Mark rows and columns using first row/col
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            if (matrix[i][j] == 0) {
-                matrix[i][0] = 0;           // mark row i
-                if (j > 0) {
-                    matrix[0][j] = 0;       // mark col j (j>0)
+        
+        // Step 2: Second pass to update the matrix based on our trackers
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (zeroRows[i] || zeroCols[j]) {
+                    matrix[i][j] = 0;
                 }
             }
         }
     }
-    
-    // Step 3: Zero out inner matrix (from i=1, j=1)
-    for (int i = 1; i < m; i++) {
-        for (int j = 1; j < n; j++) {
-            if (matrix[i][0] == 0 || matrix[0][j] == 0) {
-                matrix[i][j] = 0;
-            }
-        }
-    }
-    
-    // Step 4: Handle first row
-    if (matrix[0][0] == 0) {
-        for (int j = 0; j < n; j++) {
-            matrix[0][j] = 0;
-        }
-    }
-    
-    // Step 5: Handle first column
-    if (firstColZero) {
-        for (int i = 0; i < m; i++) {
-            matrix[i][0] = 0;
-        }
-    }
 }
-
-        
-    }
-
