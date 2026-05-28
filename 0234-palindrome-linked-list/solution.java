@@ -10,35 +10,55 @@
  */
 class Solution {
     public boolean isPalindrome(ListNode head) {
-        ListNode slow=head;
-        ListNode fast=head;
-//seprate the linked list into two
-        while(fast!=null && fast.next!=null){
-            slow=slow.next;
-            fast=fast.next.next;
-        
+        if (head == null || head.next == null) {
+            return true;
         }
-    //reverse the second half
-    ListNode prev=null;
-    ListNode curr=slow;
-    while(curr!=null){
-        ListNode next=curr.next;
-        curr.next=prev;
-        prev=curr;
-        curr=next;
 
-
-    }
-    ListNode left=head;
-    ListNode right=prev;
-    while(right!=null){
-        if(left.val!=right.val){
-            return false;
-        }
-        left =left.next;
-        right=right.next;
-    }
-    return true;
+        // 1. Find the middle of the linked list
+        ListNode slow = head;
+        ListNode fast = head;
         
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // 2. Reverse the second half of the list
+        // Start reversing from the node after slow
+        ListNode secondHalfHead = reverse(slow.next);
+
+        // 3. Compare the first half and the reversed second half
+        ListNode firstHalf = head;
+        ListNode secondHalf = secondHalfHead;
+        boolean isPalindrome = true;
+        
+        while (secondHalf != null) {
+            if (firstHalf.val != secondHalf.val) {
+                isPalindrome = false;
+                break;
+            }
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+
+        // Optional: Restore the list by reversing the second half back
+        // slow.next = reverse(secondHalfHead);
+
+        return isPalindrome;
     }
-}
+
+    // Helper method to reverse a linked list
+    private ListNode reverse(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+        
+        while (curr != null) {
+            ListNode nextTemp = curr.next; // Store next node
+            curr.next = prev;              // Reverse pointer
+            prev = curr;                   // Move prev forward
+            curr = nextTemp;               // Move curr forward
+        }
+        
+        return prev; // New head of the reversed list
+    }
+}   
